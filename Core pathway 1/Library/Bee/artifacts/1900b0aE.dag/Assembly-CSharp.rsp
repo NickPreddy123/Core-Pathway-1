@@ -349,6 +349,7 @@
 "Assets/Scripts/FreeLookCamera.cs"
 "Assets/Scripts/LaunchProjectileFinished.cs"
 "Assets/Scripts/Launch_with_Audio.cs"
+"Assets/Scripts/TurnOffTExt.cs"
 -langversion:9.0
 
 /deterministic

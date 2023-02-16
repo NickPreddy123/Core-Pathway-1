@@ -4,24 +4,32 @@ using UnityEngine;
 
 public class FreeLookCamera : MonoBehaviour
 {
-    [SerializeField] private float mouseSensitivity = 100f;
-    [SerializeField] private Transform playerBody;
-    private float xRotation = 0f;
+    public float sensitivity = 5.0f;
+    public float speed = 10.0f;
 
-    void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-    }
+    private float rotationX = 0.0f;
+    private float rotationY = 0.0f;
 
     void Update()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        // Get the mouse movement
+        float mouseX = Input.GetAxis("Mouse X") * sensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * sensitivity;
 
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        // Rotate the camera
+        rotationX += mouseY;
+        rotationY += mouseX;
+        transform.rotation = Quaternion.Euler(-rotationX, rotationY, 0.0f);
 
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        playerBody.Rotate(Vector3.up * mouseX);
+        // Move the camera
+        float vertical = Input.GetAxis("Vertical") * speed;
+        float horizontal = Input.GetAxis("Horizontal") * speed;
+        float up = Input.GetKey(KeyCode.E) ? speed : 0.0f;
+        float down = Input.GetKey(KeyCode.Q) ? speed : 0.0f;
+        transform.position += transform.forward * vertical * Time.deltaTime
+                            + transform.right * horizontal * Time.deltaTime
+                            + transform.up * (up - down) * Time.deltaTime;
+
+        Cursor.lockState = CursorLockMode.Locked;
     }
 }
